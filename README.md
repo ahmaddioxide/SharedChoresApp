@@ -1,3 +1,5 @@
+## Getting Started
+
 ## ChoreMate
 ChoreMate is a task management app designed for shared living spaces. It allows users to easily manage and track their shared responsibilities with their roommates, family, or friends.
 
@@ -33,4 +35,5 @@ After installing and running ChoreMate, sign up for an account or log in if you 
 
 ## System Diagram
 ![System Design](https://user-images.githubusercontent.com/75989502/236199947-a97326d7-19e2-4c2c-8dc9-06690105a998.png)
+
 
