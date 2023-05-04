@@ -2,13 +2,19 @@
 ChoreMate is a task management app designed for shared living spaces. It allows users to easily manage and track their shared responsibilities with their roommates, family, or friends.
 
 ## Features
-- Task list where users can view and add tasks
-- Assign tasks to specific users and set their frequency
-- Mark tasks as complete and track completed tasks history
-- Notification system to remind users of overdue tasks
-- Task manager feature where users can assign, modify, and reassign tasks
-- Contribution tracker to keep track of each user's completed tasks
--
+- The user downloads and installs the app on their mobile device.
+- The user signs up for an account or logs in if they already have an account.
+- The user is presented with a dashboard or home screen where they can view all tasks that have been added by any user.
+- The user can click on a task to view its details, such as its due date, frequency, and description, as well as see to whom it has been assigned.
+- The user can mark a task as complete when it is their turn to complete the task and they have finished it.
+- If a task is overdue, the user will receive a notification reminding them to complete it.
+- Any user can add a task to the task list and become the task manager for that task.
+- The task manager can assign the task to a specific user and set its frequency, such as daily, weekly, or monthly.
+- When a new task is assigned to a user, they will receive a notification.
+- The task manager can modify the task details or reassign the task if necessary.
+- Users can keep track of how many times each user has completed a task, and compare it with other users' counts. This allows users who are lagging in completing a task to take responsibility for completing it.
+
+
 ## Technologies Used
 - Flutter for the mobile app development
 - Firebase for the backend and database management
