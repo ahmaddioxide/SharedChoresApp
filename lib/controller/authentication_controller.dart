@@ -1,3 +1,4 @@
+import 'package:choresmate/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -31,73 +32,173 @@ class AuthenticationController {
 
   static Future<void> registerUser(BuildContext context, String username,
       String email, String password) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
 
+    UserCredential? userCredential;
     try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      ).whenComplete((){
-        addUserToFirestore(username, email);
-      } );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text("The password provided is too weak."),
-          ),
-        );
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            backgroundColor: Colors.red,
-            content: Text("The email address is not valid."),
-          ),
-        );
-      }
-    } catch (e) {
-      print(e);
+      userCredential = await auth
+          .createUserWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        // var user= User(userId: value.user!.uid, name: username, email: email, password: password,);
+        addUserToFirestore(username, email).then((value) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("User Registered Successfully"),
+            ),
+          );
+        });
+      }).onError((error, stackTrace) {
+        if (error.toString().contains("email-already-in-use")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Email Already In Use"),
+            ),
+          );
+        } else if (error.toString().contains("weak-password")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Password Should Be At Least 6 Characters"),
+            ),
+          );
+        } else if (error.toString().contains("invalid-email")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Invalid Email"),
+            ),
+          );
+        } else if (error.toString().contains("network-request-failed")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Check Your Internet Connection"),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error.toString()),
+            ),
+          );
+        }
+      });
+    } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
-          backgroundColor: Colors.red,
-          content: Text(e.toString()),
+        SnackBar(
+          content: Text(error.toString()),
         ),
       );
+      debugPrint(error.toString());
     }
-
   }
 
   static Future<void> loginUser(
       BuildContext context, String email, String password) async {
-    User? user;
+    FirebaseAuth auth = FirebaseAuth.instance;
+
     try {
-      var user = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email, password: password);
-    } catch (error) {
-      if (error is FirebaseAuthException) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(error.message.toString()),
+      await auth
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
           ),
         );
-      }
-
-    }
-    // if (errorMessage != null) {
-    //   return Future.error(errorMessage);
-    // }
-    if(user != null){
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            backgroundColor: Colors.green,
+            content: Text("Login Successful"),
+          ),
+        );
+      }).onError((error, stackTrace) {
+        if (error == null) {
+        } else if (error.toString().contains("user-not-found")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("User Not Found"),
+            ),
+          );
+        } else if (error.toString().contains("wrong-password")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("Wrong Password"),
+            ),
+          );
+        } else if (error.toString().contains("invalid-email")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("Invalid Email"),
+            ),
+          );
+        } else if (error.toString().contains("network-request-failed")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("Network Request Failed"),
+            ),
+          );
+        } else if (error.toString().contains("too-many-requests")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("Too Many Requests"),
+            ),
+          );
+        } else if (error.toString().contains("user-disabled")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("User Disabled"),
+            ),
+          );
+        } else if (error.toString().contains("operation-not-allowed")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("Operation Not Allowed"),
+            ),
+          );
+        } else if (error.toString().contains("invalid-credential")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("Invalid Credential"),
+            ),
+          );
+        } else if (error
+            .toString()
+            .contains("account-exists-with-different-credential")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("Account Exists With Different Credential"),
+            ),
+          );
+        } else if (error.toString().contains("wrong-password")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              backgroundColor: Colors.red,
+              content: Text("Wrong Password"),
+            ),
+          );
+        }
+      });
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(error.toString()),
         ),
       );
     }
-
-
   }
 }

@@ -13,61 +13,39 @@ import 'package:choresmate/ui-components/custom-widgets/grey_text.dart';
 import 'package:choresmate/ui-components/custom-widgets/custom_textformfield.dart';
 import 'package:choresmate/ui-components/custom-widgets/transparent_appbar.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
   SignupScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _usernameController = TextEditingController();
+
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
+
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
   final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final double _screenWidth = MediaQuery.of(context).size.width;
     final double _screenHeight = MediaQuery.of(context).size.height;
-
-    bool _Register() {
-      if (nameValidator(_usernameController.text.toString().trim()) == "" &&
-          emailValidator(_emailController.text.toString().trim()) == "" &&
-          passwordValidator(_passwordController.text.toString().trim()) == "" &&
-          confirmPasswordValidator(
-            _passwordController.text.toString().trim(),
-            _confirmPasswordController.text.toString().trim(),
-          )) {
-        AuthenticationController.registerUser(
-           context,
-          _usernameController.text.toString().trim(),
-          _emailController.text.toString().trim(),
-          _passwordController.text.toString().trim(),
-        );
-        return true;
-      } else {
-        String error = "";
-        if (nameValidator(_usernameController.text.toString().trim()) != "") {
-          error = nameValidator(_usernameController.text.toString().trim());
-        } else if (emailValidator(_emailController.text.toString().trim()) !=
-            "") {
-          error = emailValidator(_emailController.text.toString().trim());
-        } else if (passwordValidator(
-                _passwordController.text.toString().trim()) !=
-            "") {
-          error = passwordValidator(_passwordController.text.toString().trim());
-        } else if (!confirmPasswordValidator(
-          _passwordController.text.toString().trim(),
-          _confirmPasswordController.text.toString().trim(),
-        )) {
-          error = "Passwords do not match";
-        }
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            content: Text(error),
-          ),
-        );
-        return false;
-      }
-    }
 
     return Scaffold(
       appBar: const CustomAppBar(),
@@ -134,14 +112,7 @@ class SignupScreen extends StatelessWidget {
                       ),
                       BlueButton(
                         onPressed: () {
-                          if (_Register()) {
-                            // Navigator.pop(context);
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const HomeScreen(),
-                              ),
-                            );
-                          }
+                          _Register(context);
                         },
                         buttonText: "Register",
                         width: 0.85,
@@ -188,5 +159,47 @@ class SignupScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool _Register(context) {
+    if (nameValidator(_usernameController.text.toString().trim()) == "" &&
+        emailValidator(_emailController.text.toString().trim()) == "" &&
+        passwordValidator(_passwordController.text.toString().trim()) == "" &&
+        confirmPasswordValidator(
+          _passwordController.text.toString().trim(),
+          _confirmPasswordController.text.toString().trim(),
+        )) {
+      AuthenticationController.registerUser(
+        context,
+        _usernameController.text.toString().trim(),
+        _emailController.text.toString().trim(),
+        _passwordController.text.toString().trim(),
+      );
+      return true;
+    } else {
+      String error = "";
+      if (nameValidator(_usernameController.text.toString().trim()) != "") {
+        error = nameValidator(_usernameController.text.toString().trim());
+      } else if (emailValidator(_emailController.text.toString().trim()) !=
+          "") {
+        error = emailValidator(_emailController.text.toString().trim());
+      } else if (passwordValidator(
+              _passwordController.text.toString().trim()) !=
+          "") {
+        error = passwordValidator(_passwordController.text.toString().trim());
+      } else if (!confirmPasswordValidator(
+        _passwordController.text.toString().trim(),
+        _confirmPasswordController.text.toString().trim(),
+      )) {
+        error = "Passwords do not match";
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.red,
+          content: Text(error),
+        ),
+      );
+      return false;
+    }
   }
 }
