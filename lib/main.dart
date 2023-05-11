@@ -5,12 +5,7 @@ import 'package:device_preview/device_preview.dart';
 import 'firebase_options.dart';
 
 import 'package:choresmate/view/login_screen.dart';
-
-import 'package:choresmate/ui-components/custom-widgets/blue_text.dart';
-import 'package:choresmate/ui-components/custom-widgets/custom-button.dart';
-import 'package:choresmate/ui-components/custom-widgets/grey_text.dart';
 import 'package:choresmate/ui-components/theme.dart';
-import 'ui-components/custom-widgets/black_text.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

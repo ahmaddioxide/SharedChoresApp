@@ -1,4 +1,3 @@
-import 'package:choresmate/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +33,8 @@ class AuthenticationController {
       String email, String password) async {
     FirebaseAuth auth = FirebaseAuth.instance;
 
-    UserCredential? userCredential;
     try {
-      userCredential = await auth
+      await auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) {
         // var user= User(userId: value.user!.uid, name: username, email: email, password: password,);

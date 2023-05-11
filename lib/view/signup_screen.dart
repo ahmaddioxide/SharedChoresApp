@@ -1,4 +1,3 @@
-import 'package:choresmate/view/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 
@@ -8,13 +7,13 @@ import '../constants/validators.dart';
 import 'package:choresmate/ui-components/theme.dart';
 import 'package:choresmate/ui-components/custom-widgets/app_name.dart';
 import 'package:choresmate/ui-components/custom-widgets/black_text.dart';
-import 'package:choresmate/ui-components/custom-widgets/custom-button.dart';
+import 'package:choresmate/ui-components/custom-widgets/custom_button.dart';
 import 'package:choresmate/ui-components/custom-widgets/grey_text.dart';
 import 'package:choresmate/ui-components/custom-widgets/custom_textformfield.dart';
 import 'package:choresmate/ui-components/custom-widgets/transparent_appbar.dart';
 
 class SignupScreen extends StatefulWidget {
-  SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({Key? key}) : super(key: key);
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
