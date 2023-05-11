@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../view/home_screen.dart';
+import '../view/bottom_navigation.dart';
 
 class AuthenticationController {
   static final CollectionReference _userCollectionReference =
@@ -42,7 +42,7 @@ class AuthenticationController {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
+              builder: (context) => const BottomNavigationScreen(),
             ),
           );
           ScaffoldMessenger.of(context).showSnackBar(
@@ -105,7 +105,7 @@ class AuthenticationController {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
+            builder: (context) => const BottomNavigationScreen(),
           ),
         );
         ScaffoldMessenger.of(context).showSnackBar(
