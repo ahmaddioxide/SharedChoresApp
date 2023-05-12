@@ -2,11 +2,11 @@ import 'package:choresmate/controller/profile_controller.dart';
 import 'package:choresmate/ui-components/custom-widgets/appbar_for_blue_background.dart';
 import 'package:choresmate/ui-components/custom-widgets/black_text.dart';
 import 'package:choresmate/ui-components/custom-widgets/blue_text.dart';
-import 'package:choresmate/ui-components/custom-widgets/transparent_appbar.dart';
 import 'package:choresmate/ui-components/theme.dart';
 import 'package:flutter/material.dart';
 
 import 'login_screen.dart';
+import 'my_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -50,16 +50,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ListTile(
-                        leading: Icon(
+                        onTap: (){
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const MyProfile(),
+                            ),
+                          );
+                        },
+                        leading: const Icon(
                           Icons.person_2_rounded,
                           color: CustomColorSwatch.pimary,
                         ),
-                        title: BlackText(
+                        title: const BlackText(
                           text: "My Profile",
                           fontSize: 18,
                         ),
                       ),
-                      ListTile(
+                      const ListTile(
                         leading: Icon(
                           Icons.auto_graph_rounded,
                           color: CustomColorSwatch.pimary,
@@ -69,7 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fontSize: 18,
                         ),
                       ),
-                      ListTile(
+                      const ListTile(
                         leading: Icon(
                           Icons.settings_rounded,
                           color: CustomColorSwatch.pimary,
@@ -141,9 +148,7 @@ class ProfileBadge extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                //   SizedBox(
-                //     height:  MediaQuery.of(context).size.height*0.09,
-                // ),
+
                 Column(
                   children: [
                     FutureBuilder(
