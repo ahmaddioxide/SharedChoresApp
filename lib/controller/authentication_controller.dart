@@ -45,6 +45,7 @@ class AuthenticationController {
               builder: (context) => const BottomNavigationScreen(),
             ),
           );
+          auth.currentUser!.updateDisplayName(username);
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text("User Registered Successfully"),

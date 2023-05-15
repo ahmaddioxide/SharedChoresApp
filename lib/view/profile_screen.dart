@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:choresmate/controller/profile_controller.dart';
 import 'package:choresmate/ui-components/custom-widgets/appbar_for_blue_background.dart';
 import 'package:choresmate/ui-components/custom-widgets/black_text.dart';
@@ -15,7 +17,13 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
+
+
 class _ProfileScreenState extends State<ProfileScreen> {
+   onGoBack() {
+    // refreshData();
+    setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height *
                         0.12), // Change this based on the spacing between the card container and the avatar
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(12),
@@ -50,12 +58,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ListTile(
-                        onTap: (){
-                          Navigator.of(context).push(
+                        onTap: () {
+                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => const MyProfile(),
                             ),
-                          );
+                          ).then((value) => onGoBack());
                         },
                         leading: const Icon(
                           Icons.person_2_rounded,
