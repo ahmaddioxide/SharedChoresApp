@@ -1,5 +1,6 @@
 import 'package:choresmate/ui-components/custom-widgets/appbar_for_blue_background.dart';
 import 'package:choresmate/ui-components/custom-widgets/blue_text.dart';
+import 'package:choresmate/view/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../controller/myprofile_controller.dart';
@@ -7,7 +8,8 @@ import '../ui-components/custom-widgets/custom_button.dart';
 import '../ui-components/theme.dart';
 
 class MyProfile extends StatefulWidget {
-  const MyProfile({Key? key}) : super(key: key);
+  final VoidCallback? onClose;
+  const MyProfile({Key? key,this.onClose}) : super(key: key);
 
   @override
   State<MyProfile> createState() => _MyProfileState();
@@ -194,7 +196,11 @@ class _MyProfileState extends State<MyProfile> {
                                     _nameController.text.trim(),
                                     _phoneController.text.trim(),
                                     _dateController.text.trim())
-                                .whenComplete(() => Navigator.pop(context));
+                                .then((value) {
+
+                       Navigator.of(context).pop();
+
+                            });
 
                             // setState(()async {
                             //  await MyProfileController.updateUser(
