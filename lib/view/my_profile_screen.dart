@@ -35,7 +35,7 @@ class _MyProfileState extends State<MyProfile> {
           ),
           Expanded(
             child: Container(
-              height: MediaQuery.of(context).size.height * 0.7,
+              // height: MediaQuery.of(context).size.height * 0.7,
               width: MediaQuery.of(context).size.width * 1,
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -156,7 +156,7 @@ class _MyProfileState extends State<MyProfile> {
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.01,
                         ),
-                        const BlueText(text: "Date of Birth", fontSize: 12),
+                        const BlueText(text: "Age", fontSize: 12),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.01,
                         ),
@@ -181,7 +181,7 @@ class _MyProfileState extends State<MyProfile> {
                                   ),
                                   hintText: snapshot.hasData
                                       ? snapshot.data.toString()
-                                      : 'Date of Birth nhi he',
+                                      : 'Age nhi he',
                                 ),
                               );
                             }),
@@ -202,20 +202,6 @@ class _MyProfileState extends State<MyProfile> {
 
                             });
 
-                            // setState(()async {
-                            //  await MyProfileController.updateUser(
-                            //       _nameController.text.trim(),
-                            //       _phoneController.text.trim(),
-                            //       _dateController.text.trim()
-                            //   ).then((value) {
-                            //    ScaffoldMessenger.of(context).showSnackBar(
-                            //      const SnackBar(
-                            //        backgroundColor: Colors.green,
-                            //        content: Text("Profile Updated"),
-                            //      ),
-                            //    );
-                            //  });
-                            // });
                           },
                         ),
                       ],

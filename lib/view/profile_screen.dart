@@ -17,10 +17,8 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-
 class _ProfileScreenState extends State<ProfileScreen> {
-
-   onGoBack() {
+  onGoBack() {
     // refreshData();
     setState(() {});
   }
@@ -30,6 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,8 +64,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       ListTile(
                         onTap: () {
-                          Navigator.push( context, MaterialPageRoute( builder: (context) => const MyProfile()), ).then((value) => setState(() {}));
-
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const MyProfile()),
+                          ).then((value) => setState(() {}));
                         },
                         leading: const Icon(
                           Icons.person_2_rounded,
@@ -159,7 +161,6 @@ class ProfileBadge extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 Column(
                   children: [
                     FutureBuilder(
