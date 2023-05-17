@@ -1,12 +1,10 @@
-import 'dart:ffi';
-
 import 'package:choresmate/ui-components/custom-widgets/appbar_for_blue_background.dart';
-import 'package:choresmate/ui-components/custom-widgets/custom_textformfield.dart';
+import 'package:choresmate/ui-components/custom-widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-
 import '../controller/add_chore_controller.dart';
 import '../ui-components/custom-widgets/blue_text.dart';
 import '../ui-components/theme.dart';
+import 'create_group_screen.dart';
 
 class AddChore extends StatefulWidget {
   const AddChore({Key? key}) : super(key: key);
@@ -20,7 +18,7 @@ class _AddChoreState extends State<AddChore> {
   @override
   Widget build(BuildContext context) {
     final double _height = MediaQuery.of(context).size.height;
-    final double _width = MediaQuery.of(context).size.width;
+    // final double _width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: CustomColorSwatch.pimary,
       appBar: const WhiteAppBar(
@@ -29,10 +27,12 @@ class _AddChoreState extends State<AddChore> {
       ),
       body: Column(
         children: [
-          ElevatedButton(onPressed: ()async {
-            // print(await AddChoreController.getGroupIdOfCurrentUser());
-            await AddChoreController.getGroupIdContainsCurrentUser();
-    }, child: Text("Display emails")),
+          ElevatedButton(
+              onPressed: () async {
+                print(await AddChoreController.getUserGroupId());
+                // await AddChoreController.getUserGroupId();
+              },
+              child: const Text("Display emails")),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.04,
           ),
@@ -111,16 +111,67 @@ class _AddChoreState extends State<AddChore> {
                     SizedBox(
                       height: _height * 0.01,
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                          itemCount: 0,
-                          itemBuilder: (context, index) {
-                            return PersonTile(
-                              name: "Person $index",
-                              isSelected: false,
-                            );
-                          }),
+
+                    FutureBuilder(
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              return PersonTile(
+                                name: snapshot.data[index],
+                                isSelected: false,
+                              );
+                            },
+                          );
+                        } else {
+                          return Center(
+                            child: Column(
+                              children: [
+                                // CircularProgressIndicator(),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const Text("No Group Members Found"),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                const BlueText(
+                                    text: "Consider Creating a group?",
+                                    fontSize: 16),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                BlueButton(
+                                  buttonText: "Create Group",
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const CreateGroup(),
+                                      ),
+                                    );
+                                  },
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
                     ),
+                    // Expanded(
+                    //   child: ListView.builder(
+                    //       itemCount: 10,
+                    //       itemBuilder: (context, index) {
+                    //         return PersonTile(
+                    //           name: "Person $index",
+                    //           isSelected: false,
+                    //         );
+                    //       }),
+                    // ),
                   ],
                 ),
               ),
@@ -267,7 +318,6 @@ class _PersonTileState extends State<PersonTile> {
             onChanged: (value) {
               setState(() {
                 widget.isSelected = value!;
-
               });
             },
           ),
