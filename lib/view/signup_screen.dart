@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-
-import 'package:choresmate/controller/authentication_controller.dart';
+import '../controller/authentication_controller.dart';
 import '../constants/validators.dart';
-
-import 'package:choresmate/ui-components/theme.dart';
-import 'package:choresmate/ui-components/custom-widgets/app_name.dart';
-import 'package:choresmate/ui-components/custom-widgets/black_text.dart';
-import 'package:choresmate/ui-components/custom-widgets/custom_button.dart';
-import 'package:choresmate/ui-components/custom-widgets/grey_text.dart';
-import 'package:choresmate/ui-components/custom-widgets/custom_textformfield.dart';
-import 'package:choresmate/ui-components/custom-widgets/transparent_appbar.dart';
+import '../ui-components/app_name.dart';
+import '../ui-components/black_text.dart';
+import '../ui-components/custom_button.dart';
+import '../ui-components/custom_textformfield.dart';
+import '../ui-components/grey_text.dart';
+import '../ui-components/theme.dart';
+import '../ui-components/transparent_appbar.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -33,7 +31,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _usernameController.dispose();
     _emailController.dispose();
@@ -43,15 +40,15 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double _screenWidth = MediaQuery.of(context).size.width;
-    final double _screenHeight = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: _screenWidth * 0.05,
+            horizontal: width * 0.05,
           ),
           child: SingleChildScrollView(
             child: Column(
@@ -61,13 +58,13 @@ class _SignupScreenState extends State<SignupScreen> {
                   text: "Chores Management App",
                 ),
                 SizedBox(
-                  height: _screenHeight * 0.03,
+                  height: height * 0.03,
                 ),
                 const BlackText(
                   text: "Create your account",
                 ),
                 SizedBox(
-                  height: _screenHeight * 0.03,
+                  height: height * 0.03,
                 ),
                 Form(
                   // key: formKey,
@@ -80,7 +77,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         controller: _usernameController,
                       ),
                       SizedBox(
-                        height: _screenHeight * 0.03,
+                        height: height * 0.03,
                       ),
                       CustomTextFormField(
                         hintText: "Email",
@@ -89,7 +86,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         controller: _emailController,
                       ),
                       SizedBox(
-                        height: _screenHeight * 0.03,
+                        height: height * 0.03,
                       ),
                       CustomTextFormField(
                         hintText: "Password",
@@ -98,7 +95,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         controller: _passwordController,
                       ),
                       SizedBox(
-                        height: _screenHeight * 0.03,
+                        height: height * 0.03,
                       ),
                       CustomTextFormField(
                         hintText: "Confirm Password",
@@ -107,11 +104,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         controller: _confirmPasswordController,
                       ),
                       SizedBox(
-                        height: _screenHeight * 0.05,
+                        height: height * 0.05,
                       ),
                       BlueButton(
                         onPressed: () {
-                          _Register(context);
+                          _register(context);
                         },
                         buttonText: "Register",
                         width: 0.85,
@@ -120,14 +117,14 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: _screenHeight * 0.03,
+                  height: height * 0.03,
                 ),
                 const Divider(
                   color: Colors.grey,
                   thickness: 1,
                 ),
                 SizedBox(
-                  height: _screenHeight * 0.03,
+                  height: height * 0.03,
                 ),
                 RichText(
                   text: TextSpan(children: [
@@ -160,7 +157,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  bool _Register(context) {
+  bool _register(context) {
     if (nameValidator(_usernameController.text.toString().trim()) == "" &&
         emailValidator(_emailController.text.toString().trim()) == "" &&
         passwordValidator(_passwordController.text.toString().trim()) == "" &&

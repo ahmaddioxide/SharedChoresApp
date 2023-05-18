@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'theme.dart';
 
-import '../theme.dart';
-
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
+class WhiteAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final bool enableBackButton;
+  const WhiteAppBar({
     Key? key,
+    required this.title,
+    this.enableBackButton = false,
   }) : super(key: key);
 
   @override
@@ -12,7 +15,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       elevation: 0,
-      leading: IconButton(
+      leading: enableBackButton?
+      IconButton(
         onPressed: () {
           Navigator.pop(context);
         },
@@ -20,19 +24,26 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           height: 50,
           width: 50,
           decoration: const BoxDecoration(
-            color: CustomColorSwatch.pimary,
+            color: Colors.white,
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.all(Radius.circular(10)),
           ),
           child: const Padding(
-            padding: EdgeInsets.only(left:8),
+            padding: EdgeInsets.only(left: 8),
             child: Icon(
               Icons.arrow_back_ios,
-              color: Colors.white,
+              color: CustomColorSwatch.pimary,
             ),
           ),
         ),
-      ),
+      ):null,
+      title: title == ""
+          ? null
+          : Text(
+              title,
+              style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w600),
+            ),
+      centerTitle: true,
     );
   }
 

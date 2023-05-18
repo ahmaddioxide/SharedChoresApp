@@ -1,26 +1,17 @@
-import 'dart:async';
-
+import 'firebase_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class HomeController {
-  static final User? user = FirebaseAuth.instance.currentUser;
-  static final CollectionReference<Map<String, dynamic>> groupsRef =
-      FirebaseFirestore.instance.collection('groups');
-  static final CollectionReference<Map<String, dynamic>> usersRef = FirebaseFirestore.instance.collection('users');
-
-
-  static Future<dynamic> getListOfGroups() async {
-
-    var currentUser=await usersRef.doc(user!.uid).get().onError((error, stackTrace) {
-      return Future.value([] as FutureOr<DocumentSnapshot<Map<String, dynamic>>>?);
-    });
-    var groups=currentUser["groupIds"];
-    // if(groups==null){
-    //   return Future.value([]);
-    // }
-    return Future.value(groups);
+  static Future<List<String>> getListOfGroups() async {
+    DocumentSnapshot<Map<String, dynamic>> currentUser =
+        await FirebaseController.usersRef
+            .doc(FirebaseController.user!.uid)
+            .get();
+    if (!currentUser.toString().contains("groupIds")) {
+      return Future.value(["No groups found"]);
+    } else {
+      var groups = currentUser["groupIds"];
+      return Future.value(groups);
+    }
   }
-
-
 }

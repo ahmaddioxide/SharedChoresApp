@@ -1,12 +1,10 @@
-import 'dart:async';
-
 import 'package:choresmate/controller/profile_controller.dart';
-import 'package:choresmate/ui-components/custom-widgets/appbar_for_blue_background.dart';
-import 'package:choresmate/ui-components/custom-widgets/black_text.dart';
-import 'package:choresmate/ui-components/custom-widgets/blue_text.dart';
 import 'package:choresmate/ui-components/theme.dart';
 import 'package:flutter/material.dart';
 
+import '../ui-components/appbar_for_blue_background.dart';
+import '../ui-components/black_text.dart';
+import '../ui-components/blue_text.dart';
 import 'login_screen.dart';
 import 'my_profile_screen.dart';
 

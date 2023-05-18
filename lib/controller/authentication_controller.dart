@@ -1,20 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:choresmate/controller/firebase_controller.dart';
 import '../view/bottom_navigation.dart';
 
 class AuthenticationController {
-  static final CollectionReference _userCollectionReference =
-      FirebaseFirestore.instance.collection('users');
-  static final currentUser = FirebaseAuth.instance.currentUser;
-
   static Future<void> addUserToFirestore(
     String username,
     String email,
   ) async {
-    await _userCollectionReference
-        .doc(currentUser?.uid.toString())
+    await FirebaseController.usersRef
+        .doc(FirebaseController.user?.uid.toString())
         .set(
           {
             'username': username,

@@ -1,48 +1,53 @@
+import 'package:choresmate/controller/firebase_controller.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-class MyProfileController{
-  static final User? user=FirebaseAuth.instance.currentUser;
-  static final userRef=FirebaseFirestore.instance.collection("users").doc(user!.uid);
+class MyProfileController {
 
 
-  static Future<String>  getUserName() async{
-    return userRef.get().then((value) => value.data()!["username"]);
-
-  }
-  static Future<String> getCurrentEmail(){
-    return userRef.get().then((value) => value.data()!["email"]);
-  }
-  static Future<String> getPhoneNumber(){
-    return userRef.get().then((value) => value.data()!["phoneNumber"]);
+  static Future<String> getUserName() async {
+    return FirebaseController.currentUserRef
+        .get()
+        .then((value) => value.data()!["username"]);
   }
 
-  static getDateOfBirth(){
-    return userRef.get().then((value) => value.data()!["dateOfBirth"]);
+  static Future<String> getCurrentEmail() async {
+    return await FirebaseController.currentUserRef
+        .get()
+        .then((value) => value.data()!["email"]);
   }
 
-  static updateUserName(String username){
-    userRef.update({"username":username});
+  static Future<String> getPhoneNumber() async {
+    return await FirebaseController.currentUserRef
+        .get()
+        .then((value) => value.data()!["phoneNumber"]);
   }
-  static updatePhoneNumber(String phoneNumber){
-    userRef.update({"phoneNumber":phoneNumber});
+
+  static Future<String> getDateOfBirth() async {
+    return await FirebaseController.currentUserRef
+        .get()
+        .then((value) => value.data()!["dateOfBirth"]);
   }
-  static updateDateOfBirth(String dateOfBirth){
-    userRef.update({"dateOfBirth":dateOfBirth});
+
+  static Future<void> updateUserName(String username) async {
+    await FirebaseController.currentUserRef.update({"username": username});
+  }
+
+  static Future<void> updatePhoneNumber(String phoneNumber) async {
+    await FirebaseController.currentUserRef
+        .update({"phoneNumber": phoneNumber});
+  }
+
+  static Future<void> updateDateOfBirth(String dateOfBirth) async {
+    await FirebaseController.currentUserRef
+        .update({"dateOfBirth": dateOfBirth});
   }
 
   static Future<void> updateUser(
-      String username,
-      String phoneNumber,
-      String dateOfBirth
-      )async {
-   await userRef.update({
-      "username":username??user!.displayName,
-      "phoneNumber":phoneNumber??"null",
-      "dateOfBirth":dateOfBirth??user!.metadata.creationTime.toString().substring(0,10)
+      String username, String phoneNumber, String dateOfBirth) async {
+    await FirebaseController.currentUserRef.update({
+      "username": username ,
+      "phoneNumber": phoneNumber,
+      "dateOfBirth": dateOfBirth,
+
     });
-
-
   }
 }

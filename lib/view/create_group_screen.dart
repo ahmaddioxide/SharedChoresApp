@@ -1,64 +1,65 @@
-import 'package:choresmate/controller/create_group_controller.dart';
-import 'package:choresmate/ui-components/custom-widgets/black_text.dart';
-import 'package:choresmate/ui-components/custom-widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-
-import '../ui-components/custom-widgets/appbar_for_blue_background.dart';
+import '../controller/create_group_controller.dart';
+import '../ui-components/appbar_for_blue_background.dart';
+import '../ui-components/black_text.dart';
+import '../ui-components/custom_button.dart';
 import '../ui-components/theme.dart';
+
 
 class CreateGroup extends StatefulWidget {
   const CreateGroup({Key? key}) : super(key: key);
-
   @override
   State<CreateGroup> createState() => _CreateGroupState();
 }
 
 class _CreateGroupState extends State<CreateGroup> {
-  List<String> nameOfMembers = [];
-  List<String> userIdsOfMembers = [];
+  final List<String> _nameOfMembers = [];
+  final List<String> _userIdsOfMembers = [];
 
   @override
   Widget build(BuildContext context) {
-    final double _height = MediaQuery.of(context).size.height;
-    final double _width = MediaQuery.of(context).size.width;
-    final TextEditingController _groupNameController = TextEditingController();
-    final TextEditingController _memberEmailController =
+    final double height = MediaQuery.of(context).size.height;
+    final double width = MediaQuery.of(context).size.width;
+    final TextEditingController groupNameController = TextEditingController();
+    final TextEditingController memberEmailController =
         TextEditingController();
 
-    addMember() async {
+    Future<void> addMember() async {
       List<String> nameAndId = await CreateGroupController.findUserByEmail(
-        _memberEmailController.text.trim(),
+        memberEmailController.text.trim(),
       );
-      userIdsOfMembers.add(nameAndId[1]);
-      print(userIdsOfMembers);
+      _userIdsOfMembers.add(nameAndId[1]);
+      print(_userIdsOfMembers);
       setState(() {
         if (nameAndId[0].isNotEmpty) {
-          nameOfMembers.add(nameAndId[0]);
-          _memberEmailController.clear();
+          _nameOfMembers.add(nameAndId[0]);
+          memberEmailController.clear();
         }
       });
     }
 
-    createGroup()async{
-      if (_groupNameController.text.trim().isEmpty) {
+    Future<void> createGroup() async {
+      if (groupNameController.text.trim().isEmpty) {
         print("Group Name cannot be empty");
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text("Group Name cannot be empty")));
-      }
-      else {
+          const SnackBar(
+            content: Text("Group Name cannot be empty"),
+          ),
+        );
+      } else {
         await CreateGroupController.createGroup(
-          _groupNameController.text.trim(),
-          userIdsOfMembers,
+          groupNameController.text.trim(),
+          _userIdsOfMembers,
         ).then((value) {
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text("Group Created Successfully")));
+              const SnackBar(content: Text("Group Created Successfully")));
         }).onError((error, stackTrace) {
           ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text("There was an error")));
+            const SnackBar(
+              content: Text("There was an error"),
+            ),
+          );
         });
       }
     }
@@ -93,10 +94,10 @@ class _CreateGroupState extends State<CreateGroup> {
                   children: [
                     const BlackText(text: "Group Name", fontSize: 24),
                     SizedBox(
-                      height: _height * 0.01,
+                      height: height * 0.01,
                     ),
                     TextField(
-                      controller: _groupNameController,
+                      controller: groupNameController,
                       decoration: InputDecoration(
                         hintText: "Enter Group Name",
                         hintStyle: const TextStyle(
@@ -108,7 +109,7 @@ class _CreateGroupState extends State<CreateGroup> {
                       ),
                     ),
                     SizedBox(
-                      height: _height * 0.02,
+                      height: height * 0.02,
                     ),
                     // SizedBox(
                     //   height: _height * 0.01,
@@ -116,33 +117,33 @@ class _CreateGroupState extends State<CreateGroup> {
                     const BlackText(text: "Members", fontSize: 24),
 
                     SizedBox(
-                      height: _height * 0.02,
+                      height: height * 0.02,
                     ),
                     const Divider(
                       color: CustomColorSwatch.pimary,
                       thickness: 2,
                     ),
                     SizedBox(
-                      height: _height * 0.02,
+                      height: height * 0.02,
                     ),
                     ListView.builder(
                       shrinkWrap: true,
-                      itemCount: nameOfMembers.length,
+                      itemCount: _nameOfMembers.length,
                       itemBuilder: (context, index) {
                         return MemberTile(
-                            name: nameOfMembers[index].toString());
+                            name: _nameOfMembers[index].toString());
                       },
                     ),
                     SizedBox(
-                      height: _height * 0.02,
+                      height: height * 0.02,
                     ),
 
                     Row(
                       children: [
                         SizedBox(
-                          width: _width * 0.77,
+                          width: width * 0.7,
                           child: TextField(
-                            controller: _memberEmailController,
+                            controller: memberEmailController,
                             decoration: InputDecoration(
                               hintText: "Email of member",
                               hintStyle: const TextStyle(
@@ -155,7 +156,7 @@ class _CreateGroupState extends State<CreateGroup> {
                           ),
                         ),
                         SizedBox(
-                          width: _width * 0.02,
+                          width: width * 0.02,
                         ),
                         Container(
                             decoration: BoxDecoration(
@@ -173,14 +174,14 @@ class _CreateGroupState extends State<CreateGroup> {
                       ],
                     ),
                     SizedBox(
-                      height: _height * 0.02,
+                      height: height * 0.02,
                     ),
                     BlueButton(
                       onPressed: () async {
                         await createGroup();
                       },
                       buttonText: "Create Group",
-                      width: _width * 0.8,
+                      width: width * 0.8,
                     ),
                     // groupCreated
                     //     ? Column(
@@ -209,7 +210,7 @@ class _CreateGroupState extends State<CreateGroup> {
                     //           BlueButton(
                     //             onPressed: () {},
                     //             buttonText: "Add Member",
-                    //             width: _width * 0.8,
+                    //             width: width * 0.8,
                     //           )
                     //         ],
                     //       )
@@ -219,7 +220,7 @@ class _CreateGroupState extends State<CreateGroup> {
                     //           onPressed: () {
                     //             setState(() {
                     //               CreateGroupController.crateGroup(
-                    //                 _groupNameController.text.trim(),
+                    //                 groupNameController.text.trim(),
                     //               ).then((value) {
                     //                 if (value) {
                     //                   groupCreated = true;

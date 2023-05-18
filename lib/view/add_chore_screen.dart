@@ -1,10 +1,10 @@
-import 'package:choresmate/ui-components/custom-widgets/appbar_for_blue_background.dart';
-import 'package:choresmate/ui-components/custom-widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-import '../controller/add_chore_controller.dart';
-import '../ui-components/custom-widgets/blue_text.dart';
+import '../ui-components/appbar_for_blue_background.dart';
+import '../ui-components/blue_text.dart';
+import '../ui-components/custom_button.dart';
 import '../ui-components/theme.dart';
 import 'create_group_screen.dart';
+
 
 class AddChore extends StatefulWidget {
   const AddChore({Key? key}) : super(key: key);
@@ -15,10 +15,8 @@ class AddChore extends StatefulWidget {
 
 class _AddChoreState extends State<AddChore> {
   @override
-  @override
   Widget build(BuildContext context) {
-    final double _height = MediaQuery.of(context).size.height;
-    // final double _width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: CustomColorSwatch.pimary,
       appBar: const WhiteAppBar(
@@ -29,7 +27,7 @@ class _AddChoreState extends State<AddChore> {
         children: [
           ElevatedButton(
               onPressed: () async {
-                print(await AddChoreController.getUserGroupId());
+                // print(await AddChoreController.getUserGroupId());
                 // await AddChoreController.getUserGroupId();
               },
               child: const Text("Display emails")),
@@ -58,7 +56,7 @@ class _AddChoreState extends State<AddChore> {
                       fontSize: 24,
                     ),
                     SizedBox(
-                      height: _height * 0.01,
+                      height: height * 0.01,
                     ),
                     TextFormField(
                         style: const TextStyle(
@@ -74,18 +72,18 @@ class _AddChoreState extends State<AddChore> {
                           ),
                         )),
                     SizedBox(
-                      height: _height * 0.02,
+                      height: height * 0.02,
                     ),
                     const TaskTypeWidget(),
                     SizedBox(
-                      height: _height * 0.02,
+                      height: height * 0.02,
                     ),
                     const BlueText(
                       text: "Description",
                       fontSize: 24,
                     ),
                     SizedBox(
-                      height: _height * 0.01,
+                      height: height * 0.01,
                     ),
                     TextFormField(
                         maxLines: 3,
@@ -102,14 +100,14 @@ class _AddChoreState extends State<AddChore> {
                           ),
                         )),
                     SizedBox(
-                      height: _height * 0.02,
+                      height: height * 0.02,
                     ),
                     const BlueText(
                       text: "Assign To",
                       fontSize: 24,
                     ),
                     SizedBox(
-                      height: _height * 0.01,
+                      height: height * 0.01,
                     ),
 
                     FutureBuilder(
@@ -191,7 +189,7 @@ class TaskTypeWidget extends StatefulWidget {
 }
 
 class _TaskTypeWidgetState extends State<TaskTypeWidget> {
-  int SelectedIndex = 0;
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -202,7 +200,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
         InkWell(
           onTap: () {
             setState(() {
-              SelectedIndex = 0;
+              selectedIndex = 0;
             });
           },
           child: Container(
@@ -213,14 +211,14 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
                 color: CustomColorSwatch.pimary,
               ),
               color:
-                  SelectedIndex == 0 ? CustomColorSwatch.pimary : Colors.white,
+                  selectedIndex == 0 ? CustomColorSwatch.pimary : Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
             child: Center(
               child: Text(
                 "Weekly",
                 style: TextStyle(
-                  color: SelectedIndex == 0
+                  color: selectedIndex == 0
                       ? Colors.white
                       : CustomColorSwatch.pimary,
                   fontSize: 18,
@@ -236,7 +234,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
         InkWell(
           onTap: () {
             setState(() {
-              SelectedIndex = 1;
+              selectedIndex = 1;
             });
           },
           child: Container(
@@ -247,14 +245,14 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
                 color: CustomColorSwatch.pimary,
               ),
               color:
-                  SelectedIndex == 1 ? CustomColorSwatch.pimary : Colors.white,
+                  selectedIndex == 1 ? CustomColorSwatch.pimary : Colors.white,
               borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
             child: Center(
               child: Text(
                 "Daily",
                 style: TextStyle(
-                  color: SelectedIndex == 1
+                  color: selectedIndex == 1
                       ? Colors.white
                       : CustomColorSwatch.pimary,
                   fontSize: 18,

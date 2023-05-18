@@ -1,23 +1,21 @@
-import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-class AddChoreController{
-  static CollectionReference<Map<String, dynamic>> groupsRef = FirebaseFirestore.instance.collection('groups');
-  static CollectionReference<Map<String, dynamic>> usersRef = FirebaseFirestore.instance.collection('users');
-  static User? user=FirebaseAuth.instance.currentUser;
+class AddChoreController {
 
-  static  getUserGroupId()async{
-    var groupId="";
-    await usersRef.doc(user!.uid).get().then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
-      groupId=documentSnapshot["groupId"];
-    }).onError((error, stackTrace){
-      print("Error in getting user's group id: $error");
-      return Future.value(null);
-    });
-    return Future.value(groupId);
-  }
+  // static Future<String> getUserGroupId() async {
+  //   String groupId = "";
+  //   await FirebaseController.usersRef
+  //       .doc(FirebaseController.user!.uid)
+  //       .get()
+  //       .then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
+  //     groupId = documentSnapshot["groupId"];
+  //
+  //   }).onError((error, stackTrace) {
+  //     print("Error in getting user's group id: $error");
+  //     return Future.value(null);
+  //   });
+  //   return Future.value(groupId);
+  // }
 
   // static Future<List<dynamic>> getListOfMatesEmails()async{
   //   var groups= await getAllGroupIds();
