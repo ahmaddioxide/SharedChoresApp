@@ -7,7 +7,10 @@ import 'create_group_screen.dart';
 
 
 class AddChore extends StatefulWidget {
-  const AddChore({Key? key}) : super(key: key);
+  final String groupId;
+  const AddChore({Key? key,
+  required this.groupId,
+  }) : super(key: key);
 
   @override
   State<AddChore> createState() => _AddChoreState();
@@ -25,12 +28,12 @@ class _AddChoreState extends State<AddChore> {
       ),
       body: Column(
         children: [
-          ElevatedButton(
-              onPressed: () async {
-                // print(await AddChoreController.getUserGroupId());
-                // await AddChoreController.getUserGroupId();
-              },
-              child: const Text("Display emails")),
+          // ElevatedButton(
+          //     onPressed: () async {
+          //       // print(await AddChoreController.getUserGroupId());
+          //       // await AddChoreController.getUserGroupId();
+          //     },
+          //     child: const Text("Display emails")),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.04,
           ),

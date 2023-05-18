@@ -1,3 +1,4 @@
+import 'package:choresmate/view/group_chores_screen.dart';
 import 'package:flutter/material.dart';
 import '../controller/home_controller.dart';
 import '../controller/profile_controller.dart';
@@ -103,6 +104,7 @@ class HomeScreen extends StatelessWidget {
                       itemCount: snapshot.data?.length,
                       itemBuilder: (context, index) {
                         return GroupTile(
+                          groupID: snapshot.data![index],
                           title: snapshot.data![index],
                         );
                       },
@@ -123,37 +125,49 @@ class HomeScreen extends StatelessWidget {
 
 class GroupTile extends StatelessWidget {
   final String title;
+  final String groupID;
   const GroupTile({
     Key? key,
     required this.title,
+    required this.groupID,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.1,
-      margin: const EdgeInsets.symmetric(vertical: 5.0),
-      padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 5.0),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: CustomColorSwatch.pimary.withOpacity(0.4),
-            spreadRadius: 0.3,
-            blurRadius: 1,
-            offset: const Offset(1, 1), // changes position of shadow
+    return InkWell(
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>  GroupChores(groupId: groupID),
           ),
-        ],
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          BlueText(
-            text: title,
-            fontSize: 18,
-          ),
-        ],
+        );
+      },
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.1,
+        margin: const EdgeInsets.symmetric(vertical: 5.0),
+        padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 5.0),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: CustomColorSwatch.pimary.withOpacity(0.4),
+              spreadRadius: 0.3,
+              blurRadius: 1,
+              offset: const Offset(1, 1), // changes position of shadow
+            ),
+          ],
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            BlueText(
+              text: title,
+              fontSize: 18,
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -44,7 +44,7 @@ class _SignupScreenState extends State<SignupScreen> {
     final double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: const BlueAppBar(),
       body: Center(
         child: Padding(
           padding: EdgeInsets.symmetric(

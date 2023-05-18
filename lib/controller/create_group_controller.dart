@@ -110,10 +110,11 @@ class CreateGroupController {
   }
 
   static Future<void> createGroup(String groupName, List<String> memberIds) async {
-    memberIds.add(FirebaseController.user!.uid);
+    memberIds.add( FirebaseController.user!.uid);
     memberIds.toSet().toList();
+    print("Updated Members IDs: $memberIds");
 
-    FirebaseController.groupsRef.doc(groupName).set(
+    await FirebaseController.groupsRef.doc(groupName).set(
       {
         "mates": memberIds,
         "chores": [],

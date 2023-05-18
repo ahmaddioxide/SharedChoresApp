@@ -15,14 +15,15 @@ class CreateGroup extends StatefulWidget {
 class _CreateGroupState extends State<CreateGroup> {
   final List<String> _nameOfMembers = [];
   final List<String> _userIdsOfMembers = [];
+  final TextEditingController groupNameController = TextEditingController();
+  final TextEditingController memberEmailController =
+  TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
     final double width = MediaQuery.of(context).size.width;
-    final TextEditingController groupNameController = TextEditingController();
-    final TextEditingController memberEmailController =
-        TextEditingController();
+
 
     Future<void> addMember() async {
       List<String> nameAndId = await CreateGroupController.findUserByEmail(

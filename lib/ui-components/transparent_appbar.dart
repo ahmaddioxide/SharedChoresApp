@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'theme.dart';
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
+class BlueAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const BlueAppBar({
     Key? key,
   }) : super(key: key);
 
