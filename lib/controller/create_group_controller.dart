@@ -28,7 +28,7 @@ class CreateGroupController{
     return Future.value(members);
   }
 
-  static  ifGroupExists(String groupName) async {
+  static Future<bool>  ifGroupExists(String groupName) async {
     await groupsRef.doc(groupName).get().then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
       if(documentSnapshot.exists){
         return true;
@@ -39,7 +39,7 @@ class CreateGroupController{
     });
     return false;
   }
-  static getGroupName()async{
+  static Future<String> getGroupName()async{
     var groupName="";
     await usersRef.doc(user!.uid).get().then((DocumentSnapshot<Map<String, dynamic>> documentSnapshot) {
       groupName=documentSnapshot["groupId"];
@@ -64,14 +64,14 @@ class CreateGroupController{
 
 
   }
-  static addMember(String emailAddress){
-    usersRef.where("email",isEqualTo: emailAddress).get().then((value) {
+  static Future<void> addMember(String emailAddress)async{
+   await usersRef.where("email",isEqualTo: emailAddress).get().then((value) async {
       if(value.docs.isNotEmpty){
         var userId=value.docs.first.id;
         usersRef.doc(userId).update({
           "groupId":getGroupName(),
         });
-        groupsRef.doc(getGroupName()).update({
+        await groupsRef.doc(await getGroupName()).update({
           "mates":FieldValue.arrayUnion([emailAddress]),
         });
       }
@@ -90,7 +90,9 @@ class CreateGroupController{
   }
 
 
-  static createGroup(String groupName, List<String> memberIds){
+  static Future<void> createGroup(String groupName, List<String> memberIds){
+    memberIds.add(user!.uid);
+    memberIds.toSet().toList();
     groupsRef.doc(groupName).set({
       "mates":memberIds,
       "chores":[],

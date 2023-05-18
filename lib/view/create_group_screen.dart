@@ -22,7 +22,47 @@ class _CreateGroupState extends State<CreateGroup> {
     final double _height = MediaQuery.of(context).size.height;
     final double _width = MediaQuery.of(context).size.width;
     final TextEditingController _groupNameController = TextEditingController();
-    final TextEditingController _memberEmailController = TextEditingController();
+    final TextEditingController _memberEmailController =
+        TextEditingController();
+
+    addMember() async {
+      List<String> nameAndId = await CreateGroupController.findUserByEmail(
+        _memberEmailController.text.trim(),
+      );
+      userIdsOfMembers.add(nameAndId[1]);
+      print(userIdsOfMembers);
+      setState(() {
+        if (nameAndId[0].isNotEmpty) {
+          nameOfMembers.add(nameAndId[0]);
+          _memberEmailController.clear();
+        }
+      });
+    }
+
+    createGroup()async{
+      if (_groupNameController.text.trim().isEmpty) {
+        print("Group Name cannot be empty");
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text("Group Name cannot be empty")));
+      }
+      else {
+        await CreateGroupController.createGroup(
+          _groupNameController.text.trim(),
+          userIdsOfMembers,
+        ).then((value) {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text("Group Created Successfully")));
+        }).onError((error, stackTrace) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text("There was an error")));
+        });
+      }
+    }
+
     return Scaffold(
       backgroundColor: CustomColorSwatch.pimary,
       appBar: const WhiteAppBar(
@@ -124,17 +164,7 @@ class _CreateGroupState extends State<CreateGroup> {
                             ),
                             child: IconButton(
                                 onPressed: () async {
-                                  List<String> nameAndId=  await CreateGroupController.findUserByEmail(
-                                    _memberEmailController.text.trim(),
-                                  );
-                                   userIdsOfMembers.add(nameAndId[1]);
-                                  print(userIdsOfMembers);
-                                  setState(() {
-                                    if(nameAndId[0].isNotEmpty){
-                                      nameOfMembers.add(nameAndId[0]);
-                                      _memberEmailController.clear();
-                                    }
-                                  });
+                                  await addMember();
                                 },
                                 icon: const Icon(
                                   Icons.add,
@@ -145,15 +175,13 @@ class _CreateGroupState extends State<CreateGroup> {
                     SizedBox(
                       height: _height * 0.02,
                     ),
-                    BlueButton(onPressed: ()async{
-                     await CreateGroupController.createGroup(
-                        _groupNameController.text.trim(),
-                        userIdsOfMembers,
-                      );
-                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Group Created Successfully")));
-                      Navigator.pop(context);
-
-                    }, buttonText:"Create Group", width: _width * 0.8,),
+                    BlueButton(
+                      onPressed: () async {
+                        await createGroup();
+                      },
+                      buttonText: "Create Group",
+                      width: _width * 0.8,
+                    ),
                     // groupCreated
                     //     ? Column(
                     //         children: [

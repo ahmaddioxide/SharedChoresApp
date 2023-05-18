@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -10,7 +12,9 @@ class HomeController {
 
   static Future<dynamic> getListOfGroups() async {
 
-    var currentUser=await usersRef.doc(user!.uid).get();
+    var currentUser=await usersRef.doc(user!.uid).get().onError((error, stackTrace) {
+      return Future.value([] as FutureOr<DocumentSnapshot<Map<String, dynamic>>>?);
+    });
     var groups=currentUser["groupIds"];
     // if(groups==null){
     //   return Future.value([]);
