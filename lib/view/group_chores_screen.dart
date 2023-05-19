@@ -1,12 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:choresmate/controller/group_chores_controller.dart';
 import 'package:choresmate/ui-components/black_text.dart';
 import 'package:choresmate/ui-components/blue_text.dart';
 import 'package:choresmate/ui-components/transparent_appbar.dart';
 import 'package:choresmate/view/add_chore_screen.dart';
-import 'package:choresmate/view/task_details.dart';
-import 'package:flutter/material.dart';
+import 'package:choresmate/ui-components/chore_tile.dart';
 
-import '../ui-components/theme.dart';
 
 class GroupChores extends StatefulWidget {
   final String groupId;
@@ -67,16 +66,6 @@ class _GroupChoresState extends State<GroupChores> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            ElevatedButton(
-              onPressed: () async {
-                // print(
-                //   // await GroupChoresController.getChoresStream(
-                //   //   widget.groupId
-                //   // ).toString()
-                // );
-              },
-              child: const Text("Test"),
-            ),
             Row(
               children: [
                 const BlackText(text: "Tasks of : ", fontSize: 20),
@@ -119,9 +108,14 @@ class _GroupChoresState extends State<GroupChores> {
                       itemBuilder: (context, index) {
                         final chore = chores![index];
                         return Chore(
+                          groupID: widget.groupId,
                           title: chore['choreName'],
-                          isDone: false,
-                          choreId: "choreId",
+                          isDone: chore['isDone'] ?? false,
+                          choreId: chore['choreId'],
+                          choreDescription: chore['choreDescription'],
+                          choreType: chore['choreType'],
+                          choreDate: chore['choreDate'],
+                          choreTime: chore['choreTime'],
                         );
                       },
                     ),
@@ -136,81 +130,3 @@ class _GroupChoresState extends State<GroupChores> {
   }
 }
 
-class Chore extends StatefulWidget {
-  final String title;
-  bool isDone;
-  final String choreId;
-
-  Chore({
-    Key? key,
-    required this.title,
-    required this.isDone,
-    required this.choreId,
-  }) : super(key: key);
-
-  @override
-  State<Chore> createState() => _ChoreState();
-}
-
-class _ChoreState extends State<Chore> {
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onDoubleTap: () {
-        setState(() {
-          widget.isDone = !widget.isDone;
-        });
-      },
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const ChoreDetail(
-              choreId: "choreId",
-              choreName: "choreName",
-            ),
-          ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 5.0),
-        padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 5.0),
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: CustomColorSwatch.pimary.withOpacity(0.4),
-              spreadRadius: 0.3,
-              blurRadius: 1,
-              offset: const Offset(1, 1), // changes position of shadow
-            ),
-          ],
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              widget.title,
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-            ),
-            Checkbox(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.5),
-              ),
-              checkColor: CustomColorSwatch.pimary,
-              value: widget.isDone,
-              onChanged: (value) {
-                setState(() {
-                  widget.isDone = value!;
-                });
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
