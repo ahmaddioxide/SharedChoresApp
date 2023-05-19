@@ -87,35 +87,40 @@ class HomeScreen extends StatelessWidget {
             SizedBox(
               height: height * 0.03,
             ),
-            FutureBuilder(
-                future: HomeController.getListOfGroups(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.data.toString().contains("No groups found")) {
-                      return const Center(
-                        child: BlueText(
-                          text: "No groups found",
-                          fontSize: 18,
-                        ),
-                      );
-                    }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data?.length,
-                      itemBuilder: (context, index) {
-                        return GroupTile(
-                          groupID: snapshot.data![index],
-                          title: snapshot.data![index],
-                        );
-                      },
-                    );
-                  }
-                  return const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(),
+        StreamBuilder<List<String>>(
+          stream: HomeController.getListOfGroupsStream(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              final data = snapshot.data;
+              if (data != null && data.contains("No groups found")) {
+                return const Center(
+                  child: BlueText(
+                    text: "No groups found",
+                    fontSize: 18,
+                  ),
+                );
+              }
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: data?.length,
+                itemBuilder: (context, index) {
+                  return GroupTile(
+                    groupID: data![index],
+                    title: data[index],
                   );
-                }),
+                },
+              );
+            }
+          },
+        ),
           ],
         ),
       ),

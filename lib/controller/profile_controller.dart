@@ -1,6 +1,11 @@
 import 'package:choresmate/controller/firebase_controller.dart';
 
 class ProfileController {
+
+  static Stream getProfileStream() {
+    return FirebaseController.currentUserRef.snapshots();
+  }
+
   static Future<String> getUserName() async {
     final currentUser = await FirebaseController.currentUserRef.get();
     print(await currentUser.data()!["username"]);

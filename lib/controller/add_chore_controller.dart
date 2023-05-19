@@ -1,6 +1,37 @@
 
 
+import 'firebase_controller.dart';
+
 class AddChoreController {
+  static String choreTypeSelected="";
+static Future<bool> addChore(String groupId, String choreName, String choreDescription,String choreDate, String choreTime) async {
+  try {
+    await FirebaseController.groupsRef.doc(groupId).collection("chores").add({
+      "choreName": choreName,
+      "choreDescription": choreDescription,
+      "choreType": choreTypeSelected,
+      "choreDate": choreDate,
+      "choreTime": choreTime,
+      // "choreStatus": "Pending",
+      // "choreAssignedTo": "",
+      // "choreAssignedBy": "",
+      // "choreAssignedToId": "",
+      // "choreAssignedById": "",
+      // "choreCompletedBy": "",
+      // "choreCompletedById": "",
+      // "choreCompletedDate": "",
+      // "choreCompletedTime": "",
+    });
+    return true;
+  } catch (e) {
+    print(e);
+    return false;
+  }
+
+}
+
+
+
 
   // static Future<String> getUserGroupId() async {
   //   String groupId = "";

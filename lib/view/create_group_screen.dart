@@ -26,6 +26,14 @@ class _CreateGroupState extends State<CreateGroup> {
 
 
     Future<void> addMember() async {
+      if(memberEmailController.text.trim().isEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Email cannot be empty"),
+          ),
+        );
+        return;
+      }
       List<String> nameAndId = await CreateGroupController.findUserByEmail(
         memberEmailController.text.trim(),
       );

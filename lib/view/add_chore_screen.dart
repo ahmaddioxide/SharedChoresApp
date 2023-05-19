@@ -1,15 +1,16 @@
+import 'package:choresmate/controller/add_chore_controller.dart';
 import 'package:flutter/material.dart';
 import '../ui-components/appbar_for_blue_background.dart';
 import '../ui-components/blue_text.dart';
 import '../ui-components/custom_button.dart';
 import '../ui-components/theme.dart';
-import 'create_group_screen.dart';
-
+import 'package:intl/intl.dart';
 
 class AddChore extends StatefulWidget {
   final String groupId;
-  const AddChore({Key? key,
-  required this.groupId,
+  const AddChore({
+    Key? key,
+    required this.groupId,
   }) : super(key: key);
 
   @override
@@ -17,9 +18,57 @@ class AddChore extends StatefulWidget {
 }
 
 class _AddChoreState extends State<AddChore> {
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  static final DateTime _now = DateTime.now();
+  static final DateFormat _formatter = DateFormat('yyyy-MM-dd');
+  final String _formattedDate = _formatter.format(_now);
+  final String _choreTime = TimeOfDay.now().toString();
+
   @override
   Widget build(BuildContext context) {
     final double height = MediaQuery.of(context).size.height;
+
+    addChore() async {
+      if (_titleController.text.trim().isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: BlueText(
+              text: "Please enter a title", fontSize: 12,
+            ),
+          ),
+        );
+        return;
+      }
+      await AddChoreController.addChore(
+        widget.groupId,
+        _titleController.text.trim(),
+        _descriptionController.text.trim(),
+        _formattedDate,
+        _choreTime,
+      ).then((value) {
+        if(value==true)
+          {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: BlueText(
+                  text: "Chore added successfully", fontSize: 12,
+                ),
+              ),
+            );
+          }
+      }).onError((error, stackTrace) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: BlueText(
+              text: "Error adding chore", fontSize: 12,
+            ),
+          ),
+        );
+      });
+      Navigator.pop(context);
+    }
+
     return Scaffold(
       backgroundColor: CustomColorSwatch.pimary,
       appBar: const WhiteAppBar(
@@ -28,12 +77,6 @@ class _AddChoreState extends State<AddChore> {
       ),
       body: Column(
         children: [
-          // ElevatedButton(
-          //     onPressed: () async {
-          //       // print(await AddChoreController.getUserGroupId());
-          //       // await AddChoreController.getUserGroupId();
-          //     },
-          //     child: const Text("Display emails")),
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.04,
           ),
@@ -62,6 +105,7 @@ class _AddChoreState extends State<AddChore> {
                       height: height * 0.01,
                     ),
                     TextFormField(
+                        controller: _titleController,
                         style: const TextStyle(
                           color: CustomColorSwatch.pimary,
                         ),
@@ -89,6 +133,7 @@ class _AddChoreState extends State<AddChore> {
                       height: height * 0.01,
                     ),
                     TextFormField(
+                        controller: _descriptionController,
                         maxLines: 3,
                         style: const TextStyle(
                           color: CustomColorSwatch.pimary,
@@ -112,57 +157,58 @@ class _AddChoreState extends State<AddChore> {
                     SizedBox(
                       height: height * 0.01,
                     ),
+                    const Text("Feature on its way😁, hehe"),
 
-                    FutureBuilder(
-                      builder: (BuildContext context, AsyncSnapshot snapshot) {
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              return PersonTile(
-                                name: snapshot.data[index],
-                                isSelected: false,
-                              );
-                            },
-                          );
-                        } else {
-                          return Center(
-                            child: Column(
-                              children: [
-                                // CircularProgressIndicator(),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const Text("No Group Members Found"),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                const BlueText(
-                                    text: "Consider Creating a group?",
-                                    fontSize: 16),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                BlueButton(
-                                  buttonText: "Create Group",
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const CreateGroup(),
-                                      ),
-                                    );
-                                  },
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                    // FutureBuilder(
+                    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    //     if (snapshot.hasData) {
+                    //       return ListView.builder(
+                    //         shrinkWrap: true,
+                    //         itemCount: snapshot.data.length,
+                    //         itemBuilder: (context, index) {
+                    //           return PersonTile(
+                    //             name: snapshot.data[index],
+                    //             isSelected: false,
+                    //           );
+                    //         },
+                    //       );
+                    //     } else {
+                    //       return Center(
+                    //         child: Column(
+                    //           children: [
+                    //             // CircularProgressIndicator(),
+                    //             const SizedBox(
+                    //               height: 10,
+                    //             ),
+                    //             const Text("No Group Members Found"),
+                    //             const SizedBox(
+                    //               height: 10,
+                    //             ),
+                    //             const BlueText(
+                    //                 text: "Consider Creating a group?",
+                    //                 fontSize: 16),
+                    //             const SizedBox(
+                    //               height: 10,
+                    //             ),
+                    //             BlueButton(
+                    //               buttonText: "Create Group",
+                    //               onPressed: () {
+                    //                 Navigator.of(context).push(
+                    //                   MaterialPageRoute(
+                    //                     builder: (context) =>
+                    //                         const CreateGroup(),
+                    //                   ),
+                    //                 );
+                    //               },
+                    //               width:
+                    //                   MediaQuery.of(context).size.width * 0.5,
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       );
+                    //     }
+                    //   },
+                    // ),
                     // Expanded(
                     //   child: ListView.builder(
                     //       itemCount: 10,
@@ -173,6 +219,16 @@ class _AddChoreState extends State<AddChore> {
                     //         );
                     //       }),
                     // ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    BlueButton(
+                      onPressed: () {
+                        addChore();
+                      },
+                      buttonText: "Add Chore",
+                      width: MediaQuery.of(context).size.width * 0.5,
+                    ),
                   ],
                 ),
               ),
@@ -195,6 +251,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
+    AddChoreController.choreTypeSelected = "weekly";
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -203,6 +260,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
         InkWell(
           onTap: () {
             setState(() {
+              AddChoreController.choreTypeSelected = "daily";
               selectedIndex = 0;
             });
           },
@@ -237,6 +295,7 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
         InkWell(
           onTap: () {
             setState(() {
+              AddChoreController.choreTypeSelected = "daily";
               selectedIndex = 1;
             });
           },
@@ -270,60 +329,60 @@ class _TaskTypeWidgetState extends State<TaskTypeWidget> {
   }
 }
 
-class PersonTile extends StatefulWidget {
-  final String name;
-  bool isSelected;
-  PersonTile({
-    Key? key,
-    required this.name,
-    required this.isSelected,
-  }) : super(key: key);
-
-  @override
-  State<PersonTile> createState() => _PersonTileState();
-}
-
-class _PersonTileState extends State<PersonTile> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 5.0),
-      padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 5.0),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: CustomColorSwatch.pimary.withOpacity(0.4),
-            spreadRadius: 0.3,
-            blurRadius: 1,
-            offset: const Offset(1, 1), // changes position of shadow
-          ),
-        ],
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            widget.name,
-            style: const TextStyle(
-              fontSize: 18,
-            ),
-          ),
-          Checkbox(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4.5),
-            ),
-            checkColor: CustomColorSwatch.pimary,
-            value: widget.isSelected,
-            onChanged: (value) {
-              setState(() {
-                widget.isSelected = value!;
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
+// class PersonTile extends StatefulWidget {
+//   final String name;
+//   bool isSelected;
+//   PersonTile({
+//     Key? key,
+//     required this.name,
+//     required this.isSelected,
+//   }) : super(key: key);
+//
+//   @override
+//   State<PersonTile> createState() => _PersonTileState();
+// }
+//
+// class _PersonTileState extends State<PersonTile> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       margin: const EdgeInsets.symmetric(vertical: 5.0),
+//       padding: const EdgeInsets.symmetric(horizontal: 14.0, vertical: 5.0),
+//       decoration: BoxDecoration(
+//         boxShadow: [
+//           BoxShadow(
+//             color: CustomColorSwatch.pimary.withOpacity(0.4),
+//             spreadRadius: 0.3,
+//             blurRadius: 1,
+//             offset: const Offset(1, 1), // changes position of shadow
+//           ),
+//         ],
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(10.0),
+//       ),
+//       child: Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//         children: [
+//           Text(
+//             widget.name,
+//             style: const TextStyle(
+//               fontSize: 18,
+//             ),
+//           ),
+//           Checkbox(
+//             shape: RoundedRectangleBorder(
+//               borderRadius: BorderRadius.circular(4.5),
+//             ),
+//             checkColor: CustomColorSwatch.pimary,
+//             value: widget.isSelected,
+//             onChanged: (value) {
+//               setState(() {
+//                 widget.isSelected = value!;
+//               });
+//             },
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

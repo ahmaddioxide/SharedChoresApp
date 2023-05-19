@@ -1,3 +1,4 @@
+import 'package:choresmate/controller/group_chores_controller.dart';
 import 'package:choresmate/ui-components/black_text.dart';
 import 'package:choresmate/ui-components/blue_text.dart';
 import 'package:choresmate/ui-components/transparent_appbar.dart';
@@ -40,9 +41,8 @@ class _GroupChoresState extends State<GroupChores> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const AddChore(
-                groupId: "groupId",
-
+              builder: (context) => AddChore(
+                groupId: widget.groupId,
               ),
             ),
           );
@@ -67,6 +67,16 @@ class _GroupChoresState extends State<GroupChores> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
+            ElevatedButton(
+              onPressed: () async {
+                // print(
+                //   // await GroupChoresController.getChoresStream(
+                //   //   widget.groupId
+                //   // ).toString()
+                // );
+              },
+              child: const Text("Test"),
+            ),
             Row(
               children: [
                 const BlackText(text: "Tasks of : ", fontSize: 20),
@@ -82,18 +92,43 @@ class _GroupChoresState extends State<GroupChores> {
             SizedBox(
               height: height * 0.02,
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Chore(
-                    title: "Task $index",
-                    isDone: false,
-                    choreId: "choreId",
+            StreamBuilder<List<Map<String, dynamic>>>(
+              stream: GroupChoresController.getChoresStream(widget.groupId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(),
                   );
-                },
-              ),
-            ),
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  final chores = snapshot.data;
+                  if (chores != null && chores.isEmpty) {
+                    return const Center(
+                      child: BlueText(
+                        text: "No chores found",
+                        fontSize: 18,
+                      ),
+                    );
+                  }
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: chores?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        final chore = chores![index];
+                        return Chore(
+                          title: chore['choreName'],
+                          isDone: false,
+                          choreId: "choreId",
+                        );
+                      },
+                    ),
+                  );
+                }
+              },
+            )
           ],
         ),
       ),
@@ -132,7 +167,7 @@ class _ChoreState extends State<Chore> {
           MaterialPageRoute(
             builder: (context) => const ChoreDetail(
               choreId: "choreId",
-            choreName: "choreName",
+              choreName: "choreName",
             ),
           ),
         );

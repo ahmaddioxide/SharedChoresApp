@@ -16,4 +16,33 @@ class HomeController {
     }
   }
 
+  static Stream<dynamic> getGroupsStream() {
+    return FirebaseController.usersRef
+        .doc(FirebaseController.user!.uid)
+        .get()
+        .then((currentUser) {
+      return FirebaseController.groupsRef
+          .doc(currentUser.data()!["groupIds"][0])
+          .snapshots();
+    }).asStream();
+  }
+
+  static Stream<List<String>> getListOfGroupsStream() {
+    return FirebaseController.usersRef
+        .doc(FirebaseController.user!.uid)
+        .snapshots()
+        .map((currentUser) {
+      if (!currentUser.exists || !currentUser.data()!.containsKey("groupIds")) {
+        return ["No groups found"];
+      } else {
+        List<String> groups = List<String>.from(currentUser.data()!["groupIds"]);
+        print("GROUP IDS FROM STREAMS $groups");
+        return groups;
+      }
+    });
+  }
+
+
+
+
 }

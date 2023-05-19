@@ -139,6 +139,7 @@ class _MyProfileState extends State<MyProfile> {
                                     child: CircularProgressIndicator());
                               }
                               return TextFormField(
+                                keyboardType: TextInputType.number,
                                 controller: _phoneController,
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(
@@ -171,6 +172,7 @@ class _MyProfileState extends State<MyProfile> {
                                     child: CircularProgressIndicator());
                               }
                               return TextFormField(
+                                keyboardType: TextInputType.number,
                                 controller: _dateController,
                                 decoration: InputDecoration(
                                   border: const OutlineInputBorder(
@@ -191,6 +193,12 @@ class _MyProfileState extends State<MyProfile> {
                           width: MediaQuery.of(context).size.width * 0.9,
                           buttonText: "Save",
                           onPressed: () async {
+                            if(_nameController.text.trim().isEmpty){
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text("Name is Empty")));
+                              return;
+                            }
                             await MyProfileController.updateUser(
                                     _nameController.text.trim(),
                                     _phoneController.text.trim(),
