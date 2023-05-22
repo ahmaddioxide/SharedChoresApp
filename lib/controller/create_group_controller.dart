@@ -75,6 +75,10 @@ class CreateGroupController {
         }
       },
     );
+    if (userName == "") {
+      print("User not found");
+      return Future.value([]);
+    }
     List<String> nameAndId = [userName, userId];
     return Future.value(nameAndId);
   }

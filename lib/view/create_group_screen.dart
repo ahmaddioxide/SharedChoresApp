@@ -38,6 +38,14 @@ class _CreateGroupState extends State<CreateGroup> {
       List<String> nameAndId = await CreateGroupController.findUserByEmail(
         memberEmailController.text.trim(),
       );
+      if (nameAndId.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("User not found"),
+          ),
+        );
+        return;
+      }
       _userIdsOfMembers.add(nameAndId[1]);
       print(_userIdsOfMembers);
       setState(() {
