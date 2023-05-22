@@ -1,8 +1,8 @@
 import 'firebase_controller.dart';
 
 class AddChoreController {
-  static String choreTypeSelected = "";
-  static Future<bool> addChore(String groupId, String choreName,
+   String choreTypeSelected = "";
+   Future<bool> addChore(String groupId, String choreName,
       String choreDescription, String choreDate, String choreTime) async {
     try {
       await FirebaseController.groupsRef.doc(groupId).collection("chores").add(

@@ -90,10 +90,14 @@ class ChoreDetail extends StatelessWidget {
                                   const SizedBox(
                                     width: 10,
                                   ),
-                                  BlackText(
-                                    text: choreName,
-                                    fontSize: 24,
-                                  ),
+                                 SizedBox(
+                                   width: MediaQuery.of(context).size.width * 0.65,
+                                   child: Text(
+                                      choreName,
+                                      style: const TextStyle(fontSize: 24),
+                                     overflow: TextOverflow.fade,
+                                    ),
+                                 ),
                                 ],
                               ),
                               const SizedBox(

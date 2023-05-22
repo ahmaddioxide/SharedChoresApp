@@ -20,10 +20,12 @@ class AddChore extends StatefulWidget {
 class _AddChoreState extends State<AddChore> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  AddChoreController addChoreController = AddChoreController();
   static final DateTime _now = DateTime.now();
   static final DateFormat _formatter = DateFormat('yyyy-MM-dd');
   final String _formattedDate = _formatter.format(_now);
   final String _choreTime = TimeOfDay.now().toString();
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -34,34 +36,36 @@ class _AddChoreState extends State<AddChore> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: BlueText(
-              text: "Please enter a title", fontSize: 12,
+              text: "Please enter a title",
+              fontSize: 12,
             ),
           ),
         );
         return;
       }
-      await AddChoreController.addChore(
+      await addChoreController.addChore(
         widget.groupId,
         _titleController.text.trim(),
         _descriptionController.text.trim(),
         _formattedDate,
         _choreTime,
       ).then((value) {
-        if(value==true)
-          {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: BlueText(
-                  text: "Chore added successfully", fontSize: 12,
-                ),
+        if (value == true) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: BlueText(
+                text: "Chore added successfully",
+                fontSize: 12,
               ),
-            );
-          }
+            ),
+          );
+        }
       }).onError((error, stackTrace) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: BlueText(
-              text: "Error adding chore", fontSize: 12,
+              text: "Error adding chore",
+              fontSize: 12,
             ),
           ),
         );
@@ -94,18 +98,20 @@ class _AddChoreState extends State<AddChore> {
               child: Padding(
                 padding: const EdgeInsets.only(
                     top: 20, right: 16, left: 16, bottom: 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const BlueText(
-                      text: "Title",
-                      fontSize: 24,
-                    ),
-                    SizedBox(
-                      height: height * 0.01,
-                    ),
-                    TextFormField(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const BlueText(
+                        text: "Title",
+                        fontSize: 24,
+                      ),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                      TextFormField(
                         controller: _titleController,
+                        maxLength: 35, // Set the maximum character limit
                         style: const TextStyle(
                           color: CustomColorSwatch.pimary,
                         ),
@@ -117,24 +123,113 @@ class _AddChoreState extends State<AddChore> {
                               color: CustomColorSwatch.pimary,
                             ),
                           ),
-                        )),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    const TaskTypeWidget(),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    const BlueText(
-                      text: "Description",
-                      fontSize: 24,
-                    ),
-                    SizedBox(
-                      height: height * 0.01,
-                    ),
-                    TextFormField(
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.01,
+                      ),
+                      Text(
+                        '${_titleController.text.length}/35', // Display the character count
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          //task type widget selector goes here
+                          //weekly and daily
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                addChoreController.choreTypeSelected = "daily";
+                                selectedIndex = 0;
+                              });
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.43,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: CustomColorSwatch.pimary,
+                                ),
+                                color: selectedIndex == 0
+                                    ? CustomColorSwatch.pimary
+                                    : Colors.white,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Weekly",
+                                  style: TextStyle(
+                                    color: selectedIndex == 0
+                                        ? Colors.white
+                                        : CustomColorSwatch.pimary,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.02,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                addChoreController.choreTypeSelected = "daily";
+                                selectedIndex = 1;
+                              });
+                            },
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.06,
+                              width: MediaQuery.of(context).size.width * 0.43,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: CustomColorSwatch.pimary,
+                                ),
+                                color: selectedIndex == 1
+                                    ? CustomColorSwatch.pimary
+                                    : Colors.white,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Daily",
+                                  style: TextStyle(
+                                    color: selectedIndex == 1
+                                        ? Colors.white
+                                        : CustomColorSwatch.pimary,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      const BlueText(
+                        text: "Description",
+                        fontSize: 24,
+                      ),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                      TextFormField(
                         controller: _descriptionController,
                         maxLines: 3,
+                        maxLength: 150, // Set the maximum character limit
                         style: const TextStyle(
                           color: CustomColorSwatch.pimary,
                         ),
@@ -146,90 +241,102 @@ class _AddChoreState extends State<AddChore> {
                               color: CustomColorSwatch.pimary,
                             ),
                           ),
-                        )),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    const BlueText(
-                      text: "Assign To",
-                      fontSize: 24,
-                    ),
-                    SizedBox(
-                      height: height * 0.01,
-                    ),
-                    const Text("Feature on its way😁, hehe"),
+                        ),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.01,
+                      ),
+                      Text(
+                        '${_descriptionController.text.length}/150', // Display the character count
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      const BlueText(
+                        text: "Assign To",
+                        fontSize: 24,
+                      ),
+                      SizedBox(
+                        height: height * 0.01,
+                      ),
+                      const Text("Feature on its way😁, hehe"),
 
-                    // FutureBuilder(
-                    //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    //     if (snapshot.hasData) {
-                    //       return ListView.builder(
-                    //         shrinkWrap: true,
-                    //         itemCount: snapshot.data.length,
-                    //         itemBuilder: (context, index) {
-                    //           return PersonTile(
-                    //             name: snapshot.data[index],
-                    //             isSelected: false,
-                    //           );
-                    //         },
-                    //       );
-                    //     } else {
-                    //       return Center(
-                    //         child: Column(
-                    //           children: [
-                    //             // CircularProgressIndicator(),
-                    //             const SizedBox(
-                    //               height: 10,
-                    //             ),
-                    //             const Text("No Group Members Found"),
-                    //             const SizedBox(
-                    //               height: 10,
-                    //             ),
-                    //             const BlueText(
-                    //                 text: "Consider Creating a group?",
-                    //                 fontSize: 16),
-                    //             const SizedBox(
-                    //               height: 10,
-                    //             ),
-                    //             BlueButton(
-                    //               buttonText: "Create Group",
-                    //               onPressed: () {
-                    //                 Navigator.of(context).push(
-                    //                   MaterialPageRoute(
-                    //                     builder: (context) =>
-                    //                         const CreateGroup(),
-                    //                   ),
-                    //                 );
-                    //               },
-                    //               width:
-                    //                   MediaQuery.of(context).size.width * 0.5,
-                    //             ),
-                    //           ],
-                    //         ),
-                    //       );
-                    //     }
-                    //   },
-                    // ),
-                    // Expanded(
-                    //   child: ListView.builder(
-                    //       itemCount: 10,
-                    //       itemBuilder: (context, index) {
-                    //         return PersonTile(
-                    //           name: "Person $index",
-                    //           isSelected: false,
-                    //         );
-                    //       }),
-                    // ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    BlueButton(
-                      onPressed: () {
-                        addChore();
-                      },
-                      buttonText: "Add Chore",
-                      width: MediaQuery.of(context).size.width * 0.5,
-                    ),
-                  ],
+                      // FutureBuilder(
+                      //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      //     if (snapshot.hasData) {
+                      //       return ListView.builder(
+                      //         shrinkWrap: true,
+                      //         itemCount: snapshot.data.length,
+                      //         itemBuilder: (context, index) {
+                      //           return PersonTile(
+                      //             name: snapshot.data[index],
+                      //             isSelected: false,
+                      //           );
+                      //         },
+                      //       );
+                      //     } else {
+                      //       return Center(
+                      //         child: Column(
+                      //           children: [
+                      //             // CircularProgressIndicator(),
+                      //             const SizedBox(
+                      //               height: 10,
+                      //             ),
+                      //             const Text("No Group Members Found"),
+                      //             const SizedBox(
+                      //               height: 10,
+                      //             ),
+                      //             const BlueText(
+                      //                 text: "Consider Creating a group?",
+                      //                 fontSize: 16),
+                      //             const SizedBox(
+                      //               height: 10,
+                      //             ),
+                      //             BlueButton(
+                      //               buttonText: "Create Group",
+                      //               onPressed: () {
+                      //                 Navigator.of(context).push(
+                      //                   MaterialPageRoute(
+                      //                     builder: (context) =>
+                      //                         const CreateGroup(),
+                      //                   ),
+                      //                 );
+                      //               },
+                      //               width:
+                      //                   MediaQuery.of(context).size.width * 0.5,
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       );
+                      //     }
+                      //   },
+                      // ),
+                      // Expanded(
+                      //   child: ListView.builder(
+                      //       itemCount: 10,
+                      //       itemBuilder: (context, index) {
+                      //         return PersonTile(
+                      //           name: "Person $index",
+                      //           isSelected: false,
+                      //         );
+                      //       }),
+                      // ),
+                      SizedBox(
+                        height: height * 0.02,
+                      ),
+                      BlueButton(
+                        onPressed: () {
+                          addChore();
+                        },
+                        buttonText: "Add Chore",
+                        width: MediaQuery.of(context).size.width * 0.5,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -240,94 +347,21 @@ class _AddChoreState extends State<AddChore> {
   }
 }
 
-class TaskTypeWidget extends StatefulWidget {
-  const TaskTypeWidget({Key? key}) : super(key: key);
-
-  @override
-  State<TaskTypeWidget> createState() => _TaskTypeWidgetState();
-}
-
-class _TaskTypeWidgetState extends State<TaskTypeWidget> {
-  int selectedIndex = 0;
-  @override
-  Widget build(BuildContext context) {
-    AddChoreController.choreTypeSelected = "weekly";
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        //task type widget selector goes here
-        //weekly and daily
-        InkWell(
-          onTap: () {
-            setState(() {
-              AddChoreController.choreTypeSelected = "daily";
-              selectedIndex = 0;
-            });
-          },
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.06,
-            width: MediaQuery.of(context).size.width * 0.43,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: CustomColorSwatch.pimary,
-              ),
-              color:
-                  selectedIndex == 0 ? CustomColorSwatch.pimary : Colors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-            ),
-            child: Center(
-              child: Text(
-                "Weekly",
-                style: TextStyle(
-                  color: selectedIndex == 0
-                      ? Colors.white
-                      : CustomColorSwatch.pimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.02,
-        ),
-        InkWell(
-          onTap: () {
-            setState(() {
-              AddChoreController.choreTypeSelected = "daily";
-              selectedIndex = 1;
-            });
-          },
-          child: Container(
-            height: MediaQuery.of(context).size.height * 0.06,
-            width: MediaQuery.of(context).size.width * 0.43,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: CustomColorSwatch.pimary,
-              ),
-              color:
-                  selectedIndex == 1 ? CustomColorSwatch.pimary : Colors.white,
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-            ),
-            child: Center(
-              child: Text(
-                "Daily",
-                style: TextStyle(
-                  color: selectedIndex == 1
-                      ? Colors.white
-                      : CustomColorSwatch.pimary,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
+// class TaskTypeWidget extends StatefulWidget {
+//   const TaskTypeWidget({Key? key}) : super(key: key);
+//
+//   @override
+//   State<TaskTypeWidget> createState() => _TaskTypeWidgetState();
+// }
+//
+// class _TaskTypeWidgetState extends State<TaskTypeWidget> {
+//   int selectedIndex = 0;
+//   @override
+//   Widget build(BuildContext context) {
+//     AddChoreController.choreTypeSelected = "weekly";
+//     return
+//   }
+// }
 
 // class PersonTile extends StatefulWidget {
 //   final String name;
