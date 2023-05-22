@@ -128,13 +128,7 @@ class _AddChoreState extends State<AddChore> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.01,
                       ),
-                      Text(
-                        '${_titleController.text.length}/35', // Display the character count
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
-                      ),
+
                       SizedBox(
                         height: height * 0.02,
                       ),
@@ -246,13 +240,7 @@ class _AddChoreState extends State<AddChore> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.01,
                       ),
-                      Text(
-                        '${_descriptionController.text.length}/150', // Display the character count
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey,
-                        ),
-                      ),
+
                       SizedBox(
                         height: height * 0.02,
                       ),

@@ -1,7 +1,7 @@
 import 'firebase_controller.dart';
 
 class AddChoreController {
-   String choreTypeSelected = "";
+   String choreTypeSelected = "Weekly";
    Future<bool> addChore(String groupId, String choreName,
       String choreDescription, String choreDate, String choreTime) async {
     try {
