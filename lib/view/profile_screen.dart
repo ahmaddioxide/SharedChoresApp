@@ -41,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
-                height: MediaQuery.of(context).size.height * 0.7,
+                // height: MediaQuery.of(context).size.height * 0.8,
                 width: MediaQuery.of(context).size.width * 1,
                 margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height *
@@ -167,7 +167,8 @@ class ProfileBadge extends StatelessWidget {
                     ),
                     child: Padding(
                       padding: EdgeInsets.only(
-                          top: MediaQuery.of(context).size.height * 0.09),
+                        top: MediaQuery.of(context).size.height * 0.09,
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

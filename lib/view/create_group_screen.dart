@@ -26,6 +26,7 @@ class _CreateGroupState extends State<CreateGroup> {
 
 
     Future<void> addMember() async {
+
       if(memberEmailController.text.trim().isEmpty){
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

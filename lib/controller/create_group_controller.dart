@@ -70,6 +70,8 @@ class CreateGroupController {
         if (value.docs.isNotEmpty) {
           userName = value.docs.first["username"];
           userId = value.docs.first.id;
+          print("User found: $userName");
+          print("User ID: $userId");
         }
       },
     );

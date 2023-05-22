@@ -2,28 +2,31 @@ import 'package:choresmate/controller/firebase_controller.dart';
 
 class MyProfileController {
   static Future<String> getUserName() async {
-    return FirebaseController.currentUserRef.get().then(
-          (value) => value.data()!["username"],
-        );
+    final snapshot = await FirebaseController.currentUserRef.get();
+    final username = snapshot.data()?["username"];
+    return username ?? ''; // Provide default value if username is null
   }
 
   static Future<String> getCurrentEmail() async {
-    return await FirebaseController.currentUserRef.get().then(
-          (value) => value.data()!["email"],
-        );
+    final snapshot = await FirebaseController.currentUserRef.get();
+    final email = snapshot.data()?["email"];
+    return email ?? ''; // Provide default value if email is null
   }
+
 
   static Future<String> getPhoneNumber() async {
-    return await FirebaseController.currentUserRef.get().then(
-          (value) => value.data()!["phoneNumber"],
-        );
+    final snapshot = await FirebaseController.currentUserRef.get();
+    final phoneNumber = snapshot.data()?["phoneNumber"];
+    return phoneNumber ?? ''; // Provide default value if phoneNumber is null
   }
 
+
   static Future<String> getDateOfBirth() async {
-    return await FirebaseController.currentUserRef
-        .get()
-        .then((value) => value.data()!["dateOfBirth"]);
+    final snapshot = await FirebaseController.currentUserRef.get();
+    final dateOfBirth = snapshot.data()?["dateOfBirth"];
+    return dateOfBirth ?? ''; // Provide default value if dateOfBirth is null
   }
+
 
   static Future<void> updateUserName(String username) async {
     await FirebaseController.currentUserRef.update(

@@ -14,7 +14,7 @@ void main() {
   ).then((value) {
     runApp(
       DevicePreview(
-        enabled: true,
+        enabled: false,
         builder: (context) => const MyApp(),
       ),
       // const MyApp(),
