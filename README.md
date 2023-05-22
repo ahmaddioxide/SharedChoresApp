@@ -34,6 +34,6 @@ After installing and running ChoreMate, sign up for an account or log in if you 
 
 
 ## System Diagram
-![System Design](https://user-images.githubusercontent.com/75989502/236199947-a97326d7-19e2-4c2c-8dc9-06690105a998.png)
+![System Design](https://github.com/ahmaddioxide/SharedChoresApp/assets/75989502/2da9d4b8-2288-4d86-b566-0bb5b02338ac)
 
 
