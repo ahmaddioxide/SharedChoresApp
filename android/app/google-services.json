@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "481135648837",
+    "project_id": "chores-mate",
+    "storage_bucket": "chores-mate.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:481135648837:android:74c8df1a38dd00878f832c",
+        "android_client_info": {
+          "package_name": "com.cybernode.choresmate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "481135648837-rbnnj9kc6ae0ec0bvrkhtarnd85i0sbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAAxB_v_ZDcmvnqaoEaSiF01GNDMteUR8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "481135648837-rbnnj9kc6ae0ec0bvrkhtarnd85i0sbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
