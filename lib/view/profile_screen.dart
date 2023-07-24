@@ -1,7 +1,6 @@
 import 'package:choresmate/controller/profile_controller.dart';
 import 'package:choresmate/ui-components/theme.dart';
 import 'package:flutter/material.dart';
-
 import '../ui-components/appbar_for_blue_background.dart';
 import '../ui-components/black_text.dart';
 import '../ui-components/blue_text.dart';
